@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JaReferee Evaluator — Live referee evaluations, built for soccer</title>
-<meta name="description" content="The first soccer-native referee evaluation tool. One-thumb event logging from the touchline. USSF-standard reports the moment the whistle blows.">
-<meta property="og:title" content="JaReferee Evaluator — Live evaluations built for soccer">
-<meta property="og:description" content="Soccer-native referee evaluation tool. Used by CSA's CREST program. Selected for the 2026 USYS Presidents Cup Northwest.">
+<title>JAReferee Evaluator — Live referee evaluations, built for soccer</title>
+<meta name="description" content="A new tool for the Ref Coach's toolkit. Live evaluations built for soccer. Referees first.">
+<meta property="og:title" content="JAReferee Evaluator — Live evaluations built for soccer">
+<meta property="og:description" content="A new tool for the Ref Coach's toolkit. Used by CSA's CREST program. Selected for the 2026 USYS Presidents Cup Northwest. Referees first.">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/png" href="assets/jareferee-mark-light.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +33,6 @@
   --logo-mark: url('assets/jareferee-mark-light.png');
   --logo-wordmark: url('assets/jareferee-wordmark-light.png');
   --logo-illustration: url('assets/jareferee-illustration-light.png');
-  /* Dark-themed elements (CTA, footer chrome) — these stay fixed regardless of system theme */
   --logo-wordmark-on-dark: url('assets/jareferee-wordmark-dark.png');
   --logo-illustration-on-dark: url('assets/jareferee-illustration-dark.png');
 }
@@ -135,10 +134,17 @@ img { max-width: 100%; display: block; }
   font-size: clamp(42px, 6.5vw, 68px);
   font-weight: 900; line-height: 0.98;
   letter-spacing: -0.015em;
-  margin-bottom: 22px;
+  margin-bottom: 16px;
   color: var(--ink);
 }
 .hero-h .accent { color: var(--accent); }
+.hero-kicker {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px; font-weight: 800;
+  color: var(--red); letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
 .hero-p {
   font-size: 18px; color: var(--text2);
   max-width: 540px; line-height: 1.55;
@@ -222,40 +228,93 @@ img { max-width: 100%; display: block; }
 }
 .section-p {
   font-size: 16px; color: var(--text2);
-  max-width: 580px; line-height: 1.6;
+  max-width: 620px; line-height: 1.65;
   margin-bottom: 40px;
 }
 
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 @media (max-width: 720px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
-.problem {
+
+.capability {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 4px solid var(--red);
+  border-left: 4px solid var(--accent);
   border-radius: var(--radius);
-  padding: 22px 24px;
+  padding: 24px 26px;
 }
-.problem-h {
+.capability-h {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 19px; font-weight: 800;
-  margin-bottom: 8px; line-height: 1.2;
+  font-size: 20px; font-weight: 800;
+  margin-bottom: 10px; line-height: 1.2;
+  color: var(--ink);
 }
-.problem-p { font-size: 14px; color: var(--text2); line-height: 1.55; }
+.capability-p { font-size: 14px; color: var(--text2); line-height: 1.6; }
 
-.feature { padding: 4px 0; }
-.feature-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 32px; font-weight: 900;
-  color: var(--accent); opacity: 0.4;
-  line-height: 1; margin-bottom: 6px;
+.why {
+  padding: 100px 0;
+  background: var(--ink);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
 }
-.feature-h {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 22px; font-weight: 800;
-  margin-bottom: 8px; letter-spacing: -0.005em;
+.why::before {
+  content: '';
+  position: absolute;
+  top: -20%; left: -10%;
+  width: 380px; height: 380px;
+  background: #00d4ff;
+  opacity: 0.10;
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
 }
-.feature-p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+.why::after {
+  content: '';
+  position: absolute;
+  bottom: -15%; right: -8%;
+  width: 320px; height: 320px;
+  background: #e63946;
+  opacity: 0.08;
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+}
+.why-inner { position: relative; z-index: 1; }
+.why-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.18em;
+  color: #00d4ff; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.why-eyebrow::before {
+  content: '';
+  width: 6px; height: 16px;
+  background: #e63946;
+  display: inline-block;
+}
+.why-h {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(42px, 5.5vw, 60px);
+  font-weight: 900; letter-spacing: -0.01em;
+  margin-bottom: 28px;
+  color: #ffffff;
+}
+.why-body {
+  max-width: 700px; margin: 0 auto;
+  font-size: 17px; line-height: 1.75;
+  color: rgba(255,255,255,0.85);
+}
+.why-body p { margin-bottom: 16px; }
+.why-body p:last-child { margin-bottom: 0; }
+.why-rhythm {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px; font-weight: 700;
+  color: #ffffff; letter-spacing: 0.01em;
+  line-height: 1.7;
+}
 
 .door {
   background: var(--surface);
@@ -297,9 +356,8 @@ img { max-width: 100%; display: block; }
 }
 .door-link:hover { gap: 10px; transition: gap 0.15s; }
 
-/* CTA — locked to dark regardless of system theme */
 .cta {
-  padding: 100px 0;
+  padding: 96px 0;
   text-align: center;
   background: #0a0e15;
   color: #ffffff;
@@ -376,7 +434,6 @@ img { max-width: 100%; display: block; }
 .cta-btn:hover { background: #33ddff; }
 .cta-btn:active { transform: scale(0.97); }
 
-/* Footer — also locked to dark for consistency with the CTA above it */
 .foot {
   padding: 40px 0 36px;
   background: #07090f;
@@ -391,6 +448,12 @@ img { max-width: 100%; display: block; }
   height: 28px; width: 160px;
   background: var(--logo-wordmark-on-dark) center left / contain no-repeat;
   opacity: 0.7;
+}
+.foot-tagline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px; font-weight: 800;
+  color: #00d4ff; letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .foot-meta { font-size: 13px; }
 .foot-meta a { color: rgba(255,255,255,0.85); }
@@ -477,7 +540,7 @@ img { max-width: 100%; display: block; }
 
 <nav class="nav">
   <div class="container nav-inner">
-    <a href="#" class="nav-logo" aria-label="JaReferee home"></a>
+    <a href="#" class="nav-logo" aria-label="JAReferee home"></a>
     <button class="nav-cta" onclick="openModal('state')">Request a demo</button>
   </div>
 </nav>
@@ -485,12 +548,13 @@ img { max-width: 100%; display: block; }
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <div class="hero-eyebrow">JaReferee Evaluator</div>
+      <div class="hero-eyebrow">JAReferee Evaluator</div>
       <h1 class="hero-h">Live referee evaluations,<br>built <span class="accent">for soccer.</span></h1>
-      <p class="hero-p">The first evaluation tool designed for the touchline. One-thumb event logging during the match. USSF-standard reports the moment the whistle blows.</p>
+      <div class="hero-kicker">Referees first.</div>
+      <p class="hero-p">A new tool for the Ref Coach's toolkit. Capture the match as it happens. Walk into the debrief with everything organized and ready.</p>
       <div class="hero-buttons">
         <button class="btn btn-primary" onclick="openModal('state')">Request a demo</button>
-        <button class="btn" onclick="document.getElementById('what').scrollIntoView({behavior:'smooth'})">See how it works</button>
+        <button class="btn" onclick="document.getElementById('possible').scrollIntoView({behavior:'smooth'})">See what's possible</button>
       </div>
     </div>
     <div class="hero-illustration" aria-hidden="true"></div>
@@ -508,58 +572,39 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="possible">
   <div class="container">
-    <div class="section-eyebrow">The problem</div>
-    <h2 class="section-h">What's broken today.</h2>
-    <p class="section-p">Ref Coaches across the country are still doing evaluations on paper, clipboards, and Google Docs — then losing half the detail by the time they sit down to write the report.</p>
+    <div class="section-eyebrow">A new tool for the toolkit</div>
+    <h2 class="section-h">What's now possible.</h2>
+    <p class="section-p">Every referee carries a set of tools with them into a game. A whistle, a card, their presence, strong body language. The best referees have learned to use which tool, and when. Ref Coaches help referees sharpen those tools. JAReferee is a new tool for the Ref Coach's toolkit. The right tool for the job, at the right time, to help develop better referees.</p>
     <div class="grid-2">
-      <div class="problem">
-        <div class="problem-h">Paper forms get wet, lost, or forgotten.</div>
-        <div class="problem-p">Saturday rain ruins a whole afternoon of notes. Critical incidents go undocumented.</div>
+      <div class="capability">
+        <div class="capability-h">Eyes on the match, always.</div>
+        <div class="capability-p">Coach during the game. Writer afterward. Never both at once. JAReferee captures every foul, every offside call, every key moment with a single tap, so your eyes stay on the field where they belong. Every detail is waiting for you when the final whistle blows.</div>
       </div>
-      <div class="problem">
-        <div class="problem-h">Writing the report takes hours.</div>
-        <div class="problem-p">Reconstructing two games from scribbled notes eats most of Sunday. Reports get delayed or skipped entirely.</div>
+      <div class="capability">
+        <div class="capability-h">Organized notes, structured debriefs.</div>
+        <div class="capability-p">Walk into the debrief with every key moment time stamped, sorted, and ready to discuss. The crew sees the same event log and stats you do. Conversations get sharper. Narratives get easier to write. Your expertise stays at the center. JAReferee just hands you the organized material to work with.</div>
       </div>
-      <div class="problem">
-        <div class="problem-h">No standard format anywhere.</div>
-        <div class="problem-p">Every coach formats differently. Programs can't compare evaluations across refs or across observers.</div>
+      <div class="capability">
+        <div class="capability-h">Built for the long Saturday.</div>
+        <div class="capability-p">Two games. Three games. A full tournament weekend. Every match logged on the same phone, every crew evaluated cleanly. No cramped hands, no soaked notebooks, no shuffled pages. Just the next game ready when you are.</div>
       </div>
-      <div class="problem">
-        <div class="problem-h">Developing refs never see structured feedback.</div>
-        <div class="problem-p">CMI and CRE incidents aren't tracked over time. There's no clear pathway from Grassroots to Regional.</div>
+      <div class="capability">
+        <div class="capability-h">Better notes. Better debriefs. Better referees.</div>
+        <div class="capability-p">That's the job. Developing referees who handle bigger games, more pressure, and more responsibility. Having the right tools shortens the path. JAReferee is built to be part of that toolkit, alongside your eye, your knowledge, and everything else you bring to the field.</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section alt" id="what">
-  <div class="container">
-    <div class="section-eyebrow">The Evaluator</div>
-    <h2 class="section-h">Built for soccer's reality.</h2>
-    <p class="section-p">A web app the Ref Coach opens on their phone at the field. One-handed-friendly for someone whose eyes need to stay on the match.</p>
-    <div class="grid-2">
-      <div class="feature">
-        <div class="feature-num">01</div>
-        <div class="feature-h">Live match logging</div>
-        <div class="feature-p">Tap fouls, offside calls, misconduct, goals, and PKs as they happen. Auto-timestamped. No looking down at your phone.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-num">02</div>
-        <div class="feature-h">USSF-standard evaluations</div>
-        <div class="feature-p">CMI and CRE incidents captured in the federation's own vocabulary. Professional PDF generated automatically.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-num">03</div>
-        <div class="feature-h">Made for the 3-person crew</div>
-        <div class="feature-p">CR, AR1, AR2 evaluated as a unit. Halftime, overtime, kicks from the mark. Multiple games in one session.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-num">04</div>
-        <div class="feature-h">Email the crew immediately</div>
-        <div class="feature-p">When the whistle blows, every ref on the crew gets their evaluation in their inbox. No more weeks of waiting.</div>
-      </div>
+<section class="why">
+  <div class="container why-inner">
+    <div class="why-eyebrow">Why we built it</div>
+    <h2 class="why-h">Referees first.</h2>
+    <div class="why-body">
+      <p>JAReferee was built mobile first, for the touchline. It scales cleanly to your laptop or tablet when you sit down to review and write up. Each crew member receives their own personalized PDF after the match. Their game, their coaching remarks, their development notes, delivered by email when you're done. A copy goes to you, the Ref Coach, for long term tracking and pattern recognition across a season.</p>
+      <p class="why-rhythm">No notes lost on a phone. No notebooks ruined by sunscreen. More time on the field watching and coaching. More referees reached. Better referees developed.</p>
     </div>
   </div>
 </section>
@@ -568,7 +613,7 @@ img { max-width: 100%; display: block; }
   <div class="container">
     <div class="section-eyebrow">Who it's for</div>
     <h2 class="section-h">Three ways to put it to work.</h2>
-    <p class="section-p">Whether you run a state program, coach individually, or direct a tournament — the Evaluator fits how you actually work.</p>
+    <p class="section-p">Whether you run a state program, coach independently, or direct a tournament, JAReferee fits how you actually work.</p>
     <div class="grid-3">
       <div class="door">
         <span class="door-tag">State programs</span>
@@ -597,16 +642,16 @@ img { max-width: 100%; display: block; }
   <div class="container cta-inner">
     <div class="cta-eyebrow">Ready when you are</div>
     <h2 class="cta-h">See it in action.</h2>
-    <p class="cta-p">Tell us about your program. We'll set up a 30-minute demo and answer every question.</p>
+    <p class="cta-p">Tell us about your program. We'll set up a 30 minute demo and answer every question.</p>
     <button class="cta-btn" onclick="openModal('state')">Request a demo</button>
   </div>
 </section>
 
 <footer class="foot">
   <div class="container foot-inner">
-    <div class="foot-brand" aria-label="JaReferee"></div>
-    <div class="foot-meta">© 2026 JaReferee LLC. All rights reserved.</div>
-    <div class="foot-meta"><a href="mailto:licensing@jareferee.com">licensing@jareferee.com</a></div>
+    <div class="foot-brand" aria-label="JAReferee"></div>
+    <div class="foot-tagline">Referees first.</div>
+    <div class="foot-meta">© 2026 JAReferee LLC. All rights reserved. · <a href="mailto:licensing@jareferee.com">licensing@jareferee.com</a></div>
   </div>
 </footer>
 
@@ -616,7 +661,7 @@ img { max-width: 100%; display: block; }
 
     <div id="form-state" style="display:none;">
       <h2 class="modal-h">Let's talk about your state program.</h2>
-      <p class="modal-p">A few quick questions and we'll be in touch within 48 hours to schedule a 30-minute demo.</p>
+      <p class="modal-p">A few quick questions and we'll be in touch within 48 hours to schedule a 30 minute demo.</p>
       <form onsubmit="submitForm(event, 'state')">
         <div class="field"><label>Your name</label><input type="text" required></div>
         <div class="field"><label>Your role</label><input type="text" placeholder="State Director of Officials, Coordinator, etc." required></div>
@@ -625,9 +670,9 @@ img { max-width: 100%; display: block; }
           <select required>
             <option value="">Select…</option>
             <option>Under 5</option>
-            <option>5 – 15</option>
-            <option>15 – 40</option>
-            <option>40 – 100</option>
+            <option>5 to 15</option>
+            <option>15 to 40</option>
+            <option>40 to 100</option>
             <option>Over 100</option>
           </select>
         </div>
@@ -667,14 +712,14 @@ img { max-width: 100%; display: block; }
         <div class="field"><label>Your name</label><input type="text" required></div>
         <div class="field"><label>Your role</label><input type="text" placeholder="Tournament Director, Referee Liaison, etc." required></div>
         <div class="field"><label>Tournament name</label><input type="text" required></div>
-        <div class="field"><label>Dates</label><input type="text" placeholder="e.g. June 19–22, 2026" required></div>
+        <div class="field"><label>Dates</label><input type="text" placeholder="e.g. June 19 to 22, 2026" required></div>
         <div class="field"><label>Location (city, venue if known)</label><input type="text" required></div>
         <div class="field"><label>Approximate number of games</label>
           <select required>
             <option value="">Select…</option>
             <option>Under 50</option>
-            <option>50 – 150</option>
-            <option>150 – 400</option>
+            <option>50 to 150</option>
+            <option>150 to 400</option>
             <option>Over 400</option>
           </select>
         </div>
@@ -686,7 +731,7 @@ img { max-width: 100%; display: block; }
 
     <div id="form-success" style="display:none; text-align:center; padding:20px 0;">
       <div class="success-tick">✓</div>
-      <h2 class="modal-h">Got it — thank you.</h2>
+      <h2 class="modal-h">Got it. Thank you.</h2>
       <p class="modal-p">We'll reach out within 48 hours. Watch for an email from licensing@jareferee.com.</p>
       <button class="btn" onclick="closeModal()" style="width:100%;">Close</button>
     </div>
