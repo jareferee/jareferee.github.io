@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMS Sign-Up | JAReferee</title>
+<meta name="description" content="Sign up to receive SMS notifications from JAReferee about game assignments, schedule updates, and tournament logistics.">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #f0f4f8;
+    --surface: #ffffff;
+    --accent:  #0066cc;
+    --accent-dark: #004999;
+    --text:    #0d1117;
+    --text2:   #4a5568;
+    --border:  #d8e0e8;
+    --radius:  10px;
+    --success: #15803d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 40px 24px 96px; }
+
+  /* Brand header */
+  .brand {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 24px;
+    margin-bottom: 40px;
+  }
+  .brand-row {
+    display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .brand-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px; font-weight: 900;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .brand-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--accent);
+  }
+  .nav-links { margin-top: 14px; font-size: 14px; }
+  .nav-links a {
+    color: var(--text2); text-decoration: none; margin-right: 18px;
+    font-weight: 600;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* Page title */
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 44px; font-weight: 900;
+    letter-spacing: 0.01em;
+    margin-bottom: 8px;
+  }
+  .lede {
+    color: var(--text2); font-size: 17px;
+    margin-bottom: 32px;
+    max-width: 60ch;
+  }
+
+  /* Sections */
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px; font-weight: 800;
+    margin: 32px 0 12px;
+    color: var(--text);
+    border-left: 4px solid var(--accent);
+    padding-left: 14px;
+  }
+  p { margin-bottom: 14px; color: var(--text); }
+  ul { margin: 8px 0 16px 24px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); }
+  a:hover { color: var(--accent-dark); }
+  strong { color: var(--text); }
+
+  /* Info box */
+  .info-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin: 16px 0 28px;
+  }
+  .info-box h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 19px; font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  /* Form */
+  .form-card {
+    background: var(--surface);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 28px 28px;
+    margin: 20px 0 32px;
+  }
+  .form-card h2 {
+    margin-top: 0;
+    border-left-color: var(--accent);
+  }
+
+  .form-row { margin-bottom: 18px; }
+  .form-row label {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .form-row .req { color: #b91c1c; margin-left: 3px; }
+  .form-row input[type=text],
+  .form-row input[type=tel],
+  .form-row input[type=email] {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .form-row input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+  .form-row .help {
+    font-size: 13px; color: var(--text2);
+    margin-top: 5px;
+  }
+
+  /* Consent block */
+  .consent-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 18px 18px 18px;
+    margin-bottom: 20px;
+  }
+  .consent-row {
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .consent-row input[type=checkbox] {
+    margin-top: 4px;
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+  }
+  .consent-row label {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.55;
+    cursor: pointer;
+  }
+
+  /* Submit */
+  .submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .submit-btn:hover { background: var(--accent-dark); }
+  .submit-btn:disabled {
+    background: var(--text2);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* Confirmation */
+  .confirmation {
+    display: none;
+    background: var(--surface);
+    border: 2px solid var(--success);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+  }
+  .confirmation.show { display: block; }
+  .confirmation h2 {
+    color: var(--success);
+    border-left-color: var(--success);
+    margin-top: 0;
+  }
+  .confirmation p { margin-bottom: 8px; }
+
+  /* Footer */
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--text2);
+    text-align: center;
+  }
+  footer a { color: var(--text2); margin: 0 10px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brand">
+    <div class="brand-row">
+      <a class="brand-name" href="https://jareferee.com">JAReferee</a>
+      <span class="brand-tagline">Referees first.</span>
+    </div>
+    <div class="nav-links">
+      <a href="https://jareferee.com">Home</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/sms-signup/">SMS Sign-Up</a>
+    </div>
+  </header>
+
+  <h1>SMS Sign-Up</h1>
+  <p class="lede">Sign up to receive text messages from JAReferee about your game assignments, schedule, and gameday logistics.</p>
+
+  <div class="info-box">
+    <h3>What you will receive</h3>
+    <ul>
+      <li>Game assignment notifications when you are added to a crew</li>
+      <li>Schedule updates and switch alerts</li>
+      <li>Pre-game reminders one hour before kickoff</li>
+      <li>Weather and venue logistics announcements</li>
+    </ul>
+    <p style="margin-top:10px; margin-bottom:0;"><strong>You will not receive marketing messages.</strong> JAReferee sends only operational messages tied to your active officiating commitments.</p>
+  </div>
+
+  <!-- Sign-up Form -->
+  <div id="form-card" class="form-card">
+    <h2>Sign up for SMS</h2>
+
+    <form id="signup-form" onsubmit="return handleSubmit(event)">
+      <div class="form-row">
+        <label for="first-name">First Name<span class="req">*</span></label>
+        <input type="text" id="first-name" name="first-name" required autocomplete="given-name">
+      </div>
+
+      <div class="form-row">
+        <label for="last-name">Last Name<span class="req">*</span></label>
+        <input type="text" id="last-name" name="last-name" required autocomplete="family-name">
+      </div>
+
+      <div class="form-row">
+        <label for="mobile">Mobile Number<span class="req">*</span></label>
+        <input type="tel" id="mobile" name="mobile" required autocomplete="tel" placeholder="(720) 555-1234">
+        <div class="help">US mobile number capable of receiving SMS.</div>
+      </div>
+
+      <div class="form-row">
+        <label for="email">Email<span class="req">*</span></label>
+        <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com">
+        <div class="help">Used as a backup channel and for confirmation.</div>
+      </div>
+
+      <div class="consent-block">
+        <div class="consent-row">
+          <input type="checkbox" id="consent" name="consent" required>
+          <label for="consent">
+            I agree to receive recurring text messages from JAReferee (operated by JAReferee LLC) about game assignments, schedule updates, switch alerts, and pre-game reminders. Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time. Reply HELP for help. I have read and agree to the <a href="/privacy/" target="_blank">Privacy Policy</a> and <a href="/terms/" target="_blank">Terms of Service</a>.
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">Sign Up for SMS</button>
+    </form>
+  </div>
+
+  <!-- Confirmation (hidden until submit) -->
+  <div id="confirmation" class="confirmation">
+    <h2>You are signed up.</h2>
+    <p>Thanks for joining. Your number has been recorded.</p>
+    <p>You will receive a confirmation text within a few minutes. If you do not, email <a href="mailto:support@jareferee.com">support@jareferee.com</a>.</p>
+    <p style="margin-top:16px;"><strong>To opt out at any time:</strong> reply STOP to any JAReferee message, email support@jareferee.com, or complete the SMS Opt-Out Letter provided at tournament registration.</p>
+  </div>
+
+  <h2>Help and Opt-Out</h2>
+  <p><strong>To opt out</strong> at any time, reply <strong>STOP</strong> to any JAReferee message. You can also email <a href="mailto:support@jareferee.com">support@jareferee.com</a> or complete the SMS Opt-Out Letter provided at tournament registration. Refs who opt out receive assignments by email and check in manually instead.</p>
+  <p><strong>For help</strong>, reply <strong>HELP</strong> to any JAReferee message or email <a href="mailto:support@jareferee.com">support@jareferee.com</a>.</p>
+
+  <h2>Cost</h2>
+  <p>JAReferee does not charge for SMS messages. Message and data rates from your mobile carrier may apply.</p>
+
+  <h2>Privacy</h2>
+  <p>JAReferee will not sell, rent, or share your mobile number or SMS opt-in data with third parties or affiliates for marketing or promotional purposes. See our <a href="/privacy/">Privacy Policy</a> for more.</p>
+
+  <footer>
+    <div>© 2026 JAReferee LLC. All rights reserved.</div>
+    <div style="margin-top:8px;">
+      <a href="https://jareferee.com">Home</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/sms-signup/">SMS Sign-Up</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  // Collect form data for later backend wiring
+  var data = {
+    firstName: document.getElementById('first-name').value.trim(),
+    lastName:  document.getElementById('last-name').value.trim(),
+    mobile:    document.getElementById('mobile').value.trim(),
+    email:     document.getElementById('email').value.trim(),
+    consent:   document.getElementById('consent').checked,
+    timestamp: new Date().toISOString()
+  };
+
+  // TODO: replace this stub with fetch() to Apps Script web app endpoint
+  // For now, log locally and show confirmation. Backend wiring is the next step.
+  console.log('JAReferee SMS opt-in submission:', data);
+
+  // Show confirmation, hide form
+  document.getElementById('form-card').style.display = 'none';
+  document.getElementById('confirmation').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  return false;
+}
+</script>
+
+</body>
+</html>
