@@ -3,310 +3,260 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JAReferee: the referee program, run from one place</title>
-<meta name="description" content="The Hub gives every referee their day on one screen, gives venue staff a live board, and gives the program its feedback loop and its numbers. Built with the Colorado Soccer Association. Licensed to state programs, tournaments and referee coaches.">
-<meta property="og:title" content="JAReferee: the referee program, run from one place">
-<meta property="og:description" content="Every referee's day on one screen. A live board for venue staff. Coaching notes that reach the referee the same night. The numbers a director needs. Built with Colorado, ready for your state.">
+<title>JAReferee: game day, run from one screen</title>
+<meta name="description" content="The platform a referee program runs on. One tap check-in, a live venue board, coaching that reaches the referee the same night, formal evaluations, fitness tests and field maps. Built on real Saturdays with the Colorado Soccer Association.">
+<meta property="og:title" content="JAReferee: game day, run from one screen">
+<meta property="og:description" content="Real screens from real Saturdays: check-in, the live board, coaching notes, the Evaluator, field maps. Built with Colorado, ready for your state.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://jareferee.com/">
-<link rel="icon" type="image/png" href="assets/jareferee-mark-light.png">
+<meta property="og:image" content="https://jareferee.com/assets/shot-day.png">
+<link rel="icon" type="image/png" href="assets/jareferee-mark-dark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,600;1,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bone: #FFFFFF; --paper: #F5F7FB; --ink: #0D1320; --muted: #4A5568; --line: #E4E9F2;
-    --navy: #0078E0; --deep: #07090F; --red: #E63946; --gold: #00D4FF; --green: #1E7B3A;
-    --wordmark: url('assets/jareferee-wordmark-light.png'); --illus: url('assets/jareferee-illustration-light.png');
-    --disp: 'Barlow Condensed', 'Arial Narrow', sans-serif; --body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    --pitch: #07090F;        /* the page: floodlit black */
+    --pitch2: #0C1018;       /* raised panels */
+    --line: #1C2230;
+    --ink: #F2F6FC;
+    --muted: #9AA7BD;
+    --cyan: #00D4FF;         /* JAReferee electric cyan */
+    --red: #E63946;          /* the whistle, the action */
+    --grass: #38C172;
+    --disp: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --body: 'Atkinson Hyperlegible', system-ui, sans-serif;
   }
-  @media (prefers-color-scheme: dark) {
-    :root { --bone: #0D1118; --paper: #11161F; --ink: #F1F5F9; --muted: #94A3B8; --line: #1F2937; --navy: #00D4FF; --wordmark: url('assets/jareferee-wordmark-dark.png'); --illus: url('assets/jareferee-illustration-dark.png'); }
-    input, select, textarea { background: #11161F !important; color: #F1F5F9 !important; border-color: #374151 !important; }
-    .board .att b, .card, .phone { color: #fff; }
-  }
-  /* The phone and the board are Colorado's Hub as it looks: its own navy and gold, kept inside those frames. */
-  .phone, .board { --hub-navy: #1E3A73; --hub-gold: #F2B800; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--bone); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; background: var(--pitch); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
-  img { display: block; }
-  .wrap { width: min(1120px, 100% - 40px); margin: 0 auto; }
-  h1, h2, h3, .disp { font-family: var(--disp); font-style: italic; font-weight: 800; line-height: 0.95; letter-spacing: -0.01em; margin: 0; }
-  h2 { font-size: clamp(40px, 6vw, 64px); }
-  h3 { font-size: 28px; font-weight: 600; }
-  p { margin: 0; max-width: 62ch; }
-  .lead { font-size: 20px; color: var(--muted); max-width: 56ch; }
-  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 12px; font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 20px; text-decoration: none; border: 2px solid transparent; cursor: pointer; }
+  img { display: block; max-width: 100%; height: auto; }
+  .wrap { width: min(1140px, 100% - 40px); margin: 0 auto; }
+  h1, h2, h3, .disp { font-family: var(--disp); font-style: italic; font-weight: 800; line-height: .95; letter-spacing: -0.01em; margin: 0; }
+  h2 { font-size: clamp(42px, 6.5vw, 72px); }
+  h3 { font-size: 26px; font-weight: 600; }
+  p { margin: 0; max-width: 60ch; }
+  .lead { font-size: 20px; color: var(--muted); max-width: 54ch; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 26px; border-radius: 12px; font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 21px; text-decoration: none; border: 2px solid transparent; cursor: pointer; }
   .btn.red { background: var(--red); color: #fff; }
-  .btn.ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.55); }
-  .btn.cyan { background: var(--gold); color: #07090F; }
-  .btn.navy { background: var(--navy); color: #fff; }
-  .btn.outline { background: transparent; color: var(--navy); border-color: var(--navy); }
-  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: #3A4458; }
+  :focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
 
   /* nav */
-  .nav { position: sticky; top: 0; z-index: 10; background: var(--deep); color: #fff; }
+  .nav { position: sticky; top: 0; z-index: 20; background: rgba(7,9,15,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
   .nav .wrap { display: flex; align-items: center; gap: 18px; min-height: 64px; }
-  .nav .brand { display: flex; align-items: center; gap: 10px; font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 24px; text-decoration: none; }
-  .nav .brand i { display: block; width: 170px; height: 30px; background: url('assets/jareferee-wordmark-dark.png') center left / contain no-repeat; }
+  .nav .brand { display: block; width: 174px; height: 30px; background: url('assets/jareferee-wordmark-dark.png') center left / contain no-repeat; }
   .nav nav { margin-left: auto; display: flex; gap: 22px; align-items: center; }
-  .nav nav a { text-decoration: none; font-weight: 700; font-size: 15px; opacity: .9; }
-  .nav nav a.btn { opacity: 1; min-height: 40px; font-size: 18px; padding: 0 16px; white-space: nowrap; }
-  @media (max-width: 720px) { .nav nav a:not(.btn) { display: none; } }
+  .nav nav a { text-decoration: none; font-weight: 700; font-size: 15px; color: var(--muted); }
+  .nav nav a:hover { color: var(--ink); }
+  .nav nav a.btn { color: #fff; min-height: 40px; font-size: 18px; padding: 0 16px; white-space: nowrap; }
+  @media (max-width: 760px) { .nav nav a:not(.btn) { display: none; } }
 
   /* hero */
-  .hero { background: var(--deep); color: #fff; overflow: hidden; }
-  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding: 64px 0 56px; }
-  .hero h1 { font-size: clamp(56px, 8.5vw, 112px); }
-  .hero h1 span { display: block; color: var(--gold); }
-  .hero .illus { position: absolute; right: -40px; top: 40px; width: 420px; height: 420px; background: var(--illus) center / contain no-repeat; opacity: .08; pointer-events: none; }
-  .hero { position: relative; }
-  .hero .lead { color: #D8DFEF; margin-top: 22px; }
+  .hero { position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: -20% -10% auto; height: 120%; background:
+    radial-gradient(42% 55% at 72% 40%, rgba(0,212,255,.14), transparent 70%),
+    radial-gradient(30% 40% at 20% 80%, rgba(230,57,70,.10), transparent 70%);
+    pointer-events: none; }
+  .hero .wrap { position: relative; display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; padding: 72px 0 64px; }
+  .hero h1 { font-size: clamp(60px, 9vw, 122px); }
+  .hero h1 em { font-style: italic; color: var(--cyan); }
+  .hero .lead { margin-top: 22px; }
   .hero .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
-  .hero .where { margin-top: 28px; font-size: 15px; color: #BFC9E0; display: flex; align-items: center; gap: 10px; }
-  .hero .where img { height: 40px; width: auto; }
-  @media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; padding: 44px 0 40px; } }
+  .hero .with { margin-top: 30px; font-size: 15px; color: var(--muted); display: flex; align-items: center; gap: 12px; }
+  .hero .with img { height: 42px; width: auto; }
+  @media (max-width: 880px) { .hero .wrap { grid-template-columns: 1fr; padding: 48px 0 44px; } }
 
-  /* the phone: the app, drawn with the app's own skin */
-  .phone { justify-self: center; width: min(380px, 100%); background: #0E1E3F; border: 10px solid #0A1730; border-radius: 42px; padding: 14px 12px 18px; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
-  .phone .top { display: flex; justify-content: space-between; align-items: center; font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 18px; padding: 4px 6px 10px; }
-  .phone .top small { font-family: var(--body); font-style: normal; font-weight: 400; font-size: 12px; color: #BFC9E0; }
-  .phone .greet { font-size: 13px; color: #BFC9E0; padding: 0 6px 8px; }
-  .card { background: var(--hub-navy); border: 1px solid #2E4A85; border-radius: 14px; padding: 12px 14px; margin: 8px 0; }
-  .card .t { font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 22px; line-height: 1; }
-  .card .m { font-size: 13px; color: #D8DFEF; margin-top: 4px; }
-  .card .count { font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 40px; color: var(--hub-gold); line-height: 1; margin-top: 6px; }
-  .card.gold { border-color: var(--hub-gold); }
-  .card .row { display: flex; gap: 8px; margin-top: 10px; }
-  .pbtn { flex: 1; min-height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 17px; }
-  .pbtn.red { background: var(--red); } .pbtn.line { border: 2px solid rgba(255,255,255,.5); }
-  .pbtn.green { background: #3DBA63; color: #0B2A14; }
-  .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: #3DBA63; color: #0B2A14; }
-  .pill.wait { background: var(--hub-gold); color: #1B1F2A; }
-  .phone .state { transition: opacity .4s; }
-  .phone [data-step] { display: none; }
-  .phone[data-at="0"] [data-step="0"], .phone[data-at="1"] [data-step="1"], .phone[data-at="2"] [data-step="2"], .phone[data-at="3"] [data-step="3"] { display: block; }
-  .phone .dots { display: flex; justify-content: center; gap: 6px; padding-top: 10px; }
-  .phone .dots i { width: 6px; height: 6px; border-radius: 50%; background: #2E4A85; }
-  .phone[data-at="0"] .dots i:nth-child(1), .phone[data-at="1"] .dots i:nth-child(2), .phone[data-at="2"] .dots i:nth-child(3), .phone[data-at="3"] .dots i:nth-child(4) { background: var(--hub-gold); }
+  /* real phone screenshots in a device shell */
+  .shell { background: #05070B; border: 3px solid #232B3C; border-radius: 44px; padding: 10px; box-shadow: 0 34px 90px rgba(0,0,0,.6), 0 0 0 1px rgba(0,212,255,.08), 0 0 60px rgba(0,212,255,.07); }
+  .shell img { border-radius: 34px; width: 100%; height: auto; }
+  .hero .shell { width: min(330px, 86%); justify-self: center; transform: rotate(2.5deg); }
+  @media (max-width: 880px) { .hero .shell { transform: none; margin-top: 8px; } }
 
-  /* sections */
-  section { padding: 84px 0; }
-  section + section { border-top: 1px solid var(--line); }
-  .intro { max-width: 60ch; }
-  .intro h2 { margin-bottom: 18px; }
-  .dark { background: var(--deep); color: #fff; border-top: 0 !important; }
-  .dark .intro h2 { color: #fff; }
-  .dark .lead { color: #D8DFEF; }
-  .dark h3 { color: #fff; }
+  /* ticker */
+  .ticker { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--pitch2); overflow: hidden; }
+  .ticker .track { display: flex; width: max-content; animation: tick 36s linear infinite; }
+  .ticker span { font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 26px; padding: 12px 0; white-space: nowrap; }
+  .ticker b { color: var(--cyan); font-weight: 800; padding: 0 18px; }
+  @keyframes tick { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .ticker .track { animation: none; } html { scroll-behavior: auto; } }
 
-  /* game day timeline: a real sequence, labelled by the clock */
-  .day { margin-top: 40px; display: grid; grid-template-columns: 110px 1fr; }
-  .day .tm { font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 26px; color: var(--navy); padding: 18px 0; border-top: 1px solid var(--line); }
-  .day .ev { padding: 18px 0 18px 24px; border-top: 1px solid var(--line); border-left: 3px solid var(--navy); }
-  .day .ev b { display: block; font-size: 18px; }
-  .day .ev p { color: var(--muted); max-width: 60ch; }
-  .day .who { font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 4px; }
-  @media (max-width: 600px) { .day { grid-template-columns: 76px 1fr; } .day .tm { font-size: 20px; } .day .ev { padding-left: 14px; } }
+  section { padding: 88px 0; }
+  .intro h2 { margin-bottom: 16px; }
+  .intro .lead { margin-bottom: 8px; }
 
-  /* modules: a plain two-column list, no card kit */
-  .mods { margin-top: 44px; columns: 2; column-gap: 48px; }
-  .mod { break-inside: avoid; padding: 0 0 26px; }
-  .mod h3 { font-size: 30px; margin-bottom: 6px; }
-  .mod p { color: var(--muted); }
-  .mod .for { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-  @media (max-width: 760px) { .mods { columns: 1; } }
+  /* the rail of real screens */
+  .railwrap { margin-top: 44px; }
+  .rail { display: flex; gap: 26px; overflow-x: auto; padding: 18px 20px 26px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #2A3448 transparent; }
+  .rail::after { content: ''; flex: 0 0 1px; }
+  .shot { flex: 0 0 min(300px, 78vw); margin: 0; scroll-snap-align: center; }
+  .shot .shell { transform: rotate(-1.2deg); }
+  .shot:nth-child(2n) .shell { transform: rotate(1.2deg); }
+  .shot figcaption { margin: 16px 6px 0; font-size: 15px; color: var(--muted); }
+  .shot figcaption b { color: var(--ink); font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 21px; display: block; margin-bottom: 2px; letter-spacing: .01em; }
+  .shot.wide { flex: 0 0 min(720px, 88vw); align-self: flex-start; }
+  .browser { background: #05070B; border: 3px solid #232B3C; border-radius: 16px; overflow: hidden; box-shadow: 0 34px 90px rgba(0,0,0,.6), 0 0 60px rgba(0,212,255,.06); }
+  .browser .bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #0C1018; border-bottom: 1px solid #1A2130; }
+  .browser .bar i { width: 10px; height: 10px; border-radius: 50%; background: #2A3448; }
+  .browser .bar em { font-style: normal; font-size: 12px; color: #5A6780; margin-left: 10px; font-family: var(--body); }
+  .browser img { width: 100%; height: auto; }
+  .railhint { text-align: center; color: #5A6780; font-size: 14px; margin-top: 2px; }
 
-  /* the board: a desktop screen drawn in CSS */
-  .board { margin-top: 44px; background: #0E1E3F; border-radius: 18px; padding: 18px; border: 1px solid #2E4A85; }
-  .board .head { display: flex; justify-content: space-between; align-items: baseline; color: #BFC9E0; font-size: 14px; }
-  .board .head b { font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 28px; color: #fff; }
-  .board .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
-  .board .att { background: var(--hub-navy); border-radius: 12px; padding: 12px; border-left: 6px solid var(--hub-gold); }
-  .board .att.red { border-left-color: var(--red); } .board .att.ok { border-left-color: #3DBA63; }
-  .board .att b { display: block; font-size: 16px; color: #fff; }
-  .board .att span { font-size: 13px; color: #D8DFEF; }
-  .board .att .why { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--hub-gold); }
-  .board .att.red .why { color: #FF7A8A; } .board .att.ok .why { color: #3DBA63; }
-  @media (max-width: 720px) { .board .grid { grid-template-columns: 1fr; } }
+  /* one Saturday */
+  .sat { margin-top: 44px; border-top: 1px solid var(--line); }
+  .beat { display: grid; grid-template-columns: 120px 1fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .beat .tm { font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 32px; color: var(--cyan); }
+  .beat b { display: block; font-size: 18px; }
+  .beat p { color: var(--muted); }
+  @media (max-width: 600px) { .beat { grid-template-columns: 84px 1fr; } .beat .tm { font-size: 24px; } }
 
-  /* numbers: the real chart from the State view */
-  .chart { margin-top: 36px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
-  .chart svg { width: 100%; height: auto; display: block; }
-  .chart .leg { display: flex; gap: 18px; font-size: 14px; margin-top: 10px; flex-wrap: wrap; }
-  .chart .leg i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 36px; }
-  .stat b { display: block; font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 56px; line-height: 1; color: var(--navy); }
-  .stat span { color: var(--muted); font-size: 15px; }
-  @media (max-width: 720px) { .stats { grid-template-columns: 1fr 1fr; } }
+  /* numbers */
+  .nums { background: var(--pitch2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+  .stat b { display: block; font-family: var(--disp); font-style: italic; font-weight: 800; font-size: clamp(56px, 7vw, 84px); line-height: 1; color: var(--cyan); }
+  .stat span { color: var(--muted); font-size: 16px; display: block; max-width: 26ch; margin-top: 6px; }
+  .illus { margin-top: 26px; font-size: 13px; color: #5A6780; }
+  @media (max-width: 720px) { .stats { grid-template-columns: 1fr; } }
 
   /* rollout */
   .steps { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-  .step h3 { margin-bottom: 8px; }
-  .step p { color: #D8DFEF; }
-  .step .wk { font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 20px; color: var(--gold); }
+  .step { border-left: 3px solid var(--cyan); padding-left: 18px; }
+  .step .wk { font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 20px; color: var(--cyan); }
+  .step h3 { margin: 6px 0 8px; }
+  .step p { color: var(--muted); }
   @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
 
-  /* who + form */
+  /* demo */
   .who { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
   .who ul { list-style: none; padding: 0; margin: 24px 0 0; }
   .who li { padding: 16px 0; border-top: 1px solid var(--line); }
   .who li b { display: block; font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 26px; }
   .who li span { color: var(--muted); }
-  form { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+  .who .price { margin-top: 24px; color: var(--muted); font-size: 15px; }
+  form { background: var(--pitch2); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
   form h3 { margin-bottom: 4px; }
   form .hint { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
   label { display: block; font-size: 14px; font-weight: 700; margin: 12px 0 4px; }
-  input, select, textarea { font: inherit; width: 100%; padding: 12px; border: 1px solid #9AA3B8; border-radius: 10px; background: #fff; color: var(--ink); }
+  input, select, textarea { font: inherit; width: 100%; padding: 12px; border: 1px solid #2A3448; border-radius: 10px; background: #07090F; color: var(--ink); }
   textarea { min-height: 90px; }
   form .btn { width: 100%; margin-top: 18px; }
-  form .ok { display: none; padding: 14px; border-radius: 10px; background: #E6F4EA; color: var(--green); font-weight: 700; margin-top: 14px; }
+  form .ok { display: none; padding: 14px; border-radius: 10px; background: rgba(56,193,114,.12); color: var(--grass); font-weight: 700; margin-top: 14px; }
   @media (max-width: 860px) { .who { grid-template-columns: 1fr; } }
 
-  footer { background: var(--deep); color: #BFC9E0; padding: 40px 0; font-size: 14px; }
+  footer { border-top: 1px solid var(--line); color: var(--muted); padding: 40px 0; font-size: 14px; }
   footer .wrap { display: flex; flex-wrap: wrap; gap: 18px 36px; align-items: center; }
-  footer a { color: #fff; }
-  footer .brand { display: flex; align-items: center; gap: 10px; font-family: var(--disp); font-style: italic; font-weight: 800; font-size: 22px; color: #fff; }
-  footer .brand i { display: block; width: 150px; height: 26px; background: url('assets/jareferee-wordmark-dark.png') center left / contain no-repeat; opacity: .8; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .phone .state { transition: none; } }
+  footer a { color: var(--ink); }
+  footer .brand { display: block; width: 150px; height: 26px; background: url('assets/jareferee-wordmark-dark.png') center left / contain no-repeat; opacity: .85; }
 </style>
 </head>
 <body>
 
 <header class="nav"><div class="wrap">
-  <a class="brand" href="#" aria-label="JAReferee home"><i></i></a>
+  <a class="brand" href="#" aria-label="JAReferee home"></a>
   <nav>
-    <a href="#gameday">A game day</a>
-    <a href="#inside">What's inside</a>
-    <a href="#numbers">The numbers</a>
+    <a href="#screens">The screens</a>
+    <a href="#saturday">One Saturday</a>
+    <a href="#numbers">Why it matters</a>
     <a href="states.html">For your state</a>
     <a class="btn red" href="#demo">Request a demo</a>
   </nav>
 </div></header>
 
-<section class="hero"><div class="illus" aria-hidden="true"></div><div class="wrap">
+<section class="hero"><div class="wrap">
   <div>
-    <h1>Every referee's day,<span>on one screen.</span></h1>
-    <p class="lead">The Hub gives each referee their games, their check-in and their coaching notes on their phone. It gives venue staff a live board that says who needs attention. And it gives the program a feedback loop that reaches the referee the same night, plus the numbers a director has never had.</p>
-    <div class="actions"><a class="btn red" href="#demo">Request a demo</a><a class="btn ghost" href="#gameday">Watch a game day</a></div>
-    <div class="where"><img src="assets/csa-placeholder.png" alt="Colorado Soccer Association" style="width:auto;height:40px">Built with the Colorado Soccer Association referee program. In use every weekend, 2,800 referees.</div>
+    <h1>Every referee.<br>Every field.<br><em>Live.</em></h1>
+    <p class="lead">JAReferee is the platform a referee program runs on. The referee gets their whole day on one screen. The venue gets a board that flags what needs a person. The program gets a coaching loop that lands the same night, and numbers it never had. These are real screens, live every weekend in Colorado.</p>
+    <div class="actions"><a class="btn red" href="#demo">Request a demo</a><a class="btn ghost" href="#screens">See the screens</a></div>
+    <div class="with"><img src="assets/csa-placeholder.png" alt="Colorado Soccer Association">Built on real Saturdays with the Colorado Soccer Association referee program.</div>
   </div>
+  <div class="shell"><img src="assets/shot-day.png" alt="The Hub on a phone: 18 minutes to kickoff, a red Check in button, the coaching note from last weekend" width="780" height="1688"></div>
+</div></section>
 
-  <div class="phone" id="phone" aria-label="Colorado's Hub on a phone">
-    <div class="top">Colorado Referees <small>Español</small></div>
-    <div class="greet">Good morning, Maya. Saturday, October 17.</div>
-    <div class="state">
-      <div data-step="0">
-        <div class="card gold"><div class="t">Kicks off in 48 min</div><div class="m">Field 7, U14 Girls, Rush vs Pride. You are the center.</div><div class="count">8:00</div><div class="row"><div class="pbtn red">I'm here</div><div class="pbtn line">Running late</div></div></div>
-        <div class="card"><div class="t">Your day</div><div class="m">3 games at Dick's Sporting Goods Park. Last kickoff 1:30.</div></div>
-      </div>
-      <div data-step="1">
-        <div class="card gold"><div class="t">Kicks off in 46 min</div><div class="m">Field 7, U14 Girls, Rush vs Pride.</div><div style="margin-top:8px"><span class="pill">Checked in 7:14</span></div></div>
-        <div class="card"><div class="t">Rules for today</div><div class="m">Fall Cup: 2 x 35, 7 subs, no re-entry in the last 10. Tap for the full guide.</div></div>
-      </div>
-      <div data-step="2">
-        <div class="card gold"><div class="t">Coach at your field</div><div class="m">A referee coach is watching your 10:30. Say hello. Look for the lanyard.</div></div>
-        <div class="card"><div class="t">Your day</div><div class="m">1 of 3 played. Next: 10:30, Field 7.</div></div>
-      </div>
-      <div data-step="3">
-        <div class="card gold"><div class="t">New note from your coach</div><div class="m">"Great positioning on the counter in the 2nd half. Work on the whistle tone for the early fouls; make the first one count."</div><div style="margin-top:8px"><span class="pill wait">Read 7:52 pm</span></div></div>
-        <div class="card"><div class="t">Your season</div><div class="m">14 games, 9 in the center, 3 coaching notes. Fitness test passed.</div></div>
-      </div>
-    </div>
-    <div class="dots"><i></i><i></i><i></i><i></i></div>
+<div class="ticker" aria-hidden="true"><div class="track">
+  <span>ONE TAP CHECK-IN<b>&#9679;</b>A LIVE VENUE BOARD<b>&#9679;</b>FEEDBACK THE SAME NIGHT<b>&#9679;</b>EN ESPA&Ntilde;OL TAMBI&Eacute;N<b>&#9679;</b>FIELD MAPS AT THE GATE<b>&#9679;</b>THE LAWS IN YOUR POCKET<b>&#9679;</b>FITNESS TESTS ON ONE SHEET<b>&#9679;</b>REFEREES FIRST<b>&#9679;</b></span>
+  <span>ONE TAP CHECK-IN<b>&#9679;</b>A LIVE VENUE BOARD<b>&#9679;</b>FEEDBACK THE SAME NIGHT<b>&#9679;</b>EN ESPA&Ntilde;OL TAMBI&Eacute;N<b>&#9679;</b>FIELD MAPS AT THE GATE<b>&#9679;</b>THE LAWS IN YOUR POCKET<b>&#9679;</b>FITNESS TESTS ON ONE SHEET<b>&#9679;</b>REFEREES FIRST<b>&#9679;</b></span>
+</div></div>
+
+<section id="screens"><div class="wrap intro">
+  <h2>Not mock-ups. Saturdays.</h2>
+  <p class="lead">Every screen below is the product as it runs, shown with sample data. Swipe through a game day the way the people on the grass see it.</p>
+</div>
+<div class="railwrap"><div class="rail" tabindex="0" aria-label="Screens of the product, scroll sideways">
+  <figure class="shot">
+    <div class="shell"><img loading="lazy" src="assets/shot-day.png" alt="Your day: 18 minutes to kickoff, check in, running late, the coaching note" width="780" height="1688"></div>
+    <figcaption><b>Your day</b>18 minutes out, the referee already has the field, the crew, the countdown and a red button that says Check in.</figcaption>
+  </figure>
+  <figure class="shot wide">
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><em>Command Center, Referee HQ</em></div><img loading="lazy" src="assets/shot-board.png" alt="Command Center board: venues, games, checked in count, needs attention list with a running late referee and an open help call" width="2560" height="2120"></div>
+    <figcaption><b>The board</b>It watches every game at the venue and shows the coordinator the few that need a person: not checked in, running late, a help call.</figcaption>
+  </figure>
+  <figure class="shot">
+    <div class="shell"><img loading="lazy" src="assets/shot-coach.png" alt="Coaching screen: formal evaluations assigned to you, your block today, your availability" width="780" height="1688"></div>
+    <figcaption><b>Coaching</b>A referee coach writes the note at the field. The program reviews it, and the referee reads it the same night.</figcaption>
+  </figure>
+  <figure class="shot">
+    <div class="shell"><img loading="lazy" src="assets/shot-evaluator.png" alt="The Evaluator in daylight mode: score, half clock, foul buttons with team colors and direction" width="840" height="1688"></div>
+    <figcaption><b>The Evaluator</b>Formal evaluations with a live clock, score and foul log. A daylight mode built for a sideline in full sun.</figcaption>
+  </figure>
+  <figure class="shot">
+    <div class="shell"><img loading="lazy" src="assets/shot-map.png" alt="Field map of Aurora Sports Park with numbered fields and referee HQ marked" width="780" height="1688"></div>
+    <figcaption><b>Field maps</b>A QR sign at the gate opens every field at the venue, with Referee HQ marked and live game status per field.</figcaption>
+  </figure>
+  <figure class="shot">
+    <div class="shell"><img loading="lazy" src="assets/shot-library.png" alt="The Library: using the Hub, the Laws, game day procedures, career, contacts" width="780" height="1688"></div>
+    <figcaption><b>The Library</b>The Laws of the Game in plain words, the program guide and every league's rules. Opens once, then works offline.</figcaption>
+  </figure>
+  <figure class="shot">
+    <div class="shell"><img loading="lazy" src="assets/shot-day-es.png" alt="The same Your day screen in Spanish" width="780" height="1688"></div>
+    <figcaption><b>En espa&ntilde;ol</b>Every screen, every note, every rule page. One tap switches the whole thing, and it stays that way.</figcaption>
+  </figure>
+</div></div>
+<p class="railhint">Drag or scroll sideways.</p>
+</section>
+
+<section id="saturday"><div class="wrap">
+  <div class="intro"><h2>One Saturday, start to finish.</h2>
+  <p class="lead">This is the order it happens, and who sees what.</p></div>
+  <div class="sat">
+    <div class="beat"><div class="tm">6:50</div><div><b>The referee opens Your day</b><p>Games synced from the assigning platform overnight. Countdown, field, crew, the rules for that league, and a map to the venue. In Spanish if that is what they chose.</p></div></div>
+    <div class="beat"><div class="tm">7:14</div><div><b>One tap to check in</b><p>No QR hunt, no clipboard. The name turns green on the board. Not checked in turns gold 30 minutes before kickoff and red at 15.</p></div></div>
+    <div class="beat"><div class="tm">7:40</div><div><b>Running late, with an answer</b><p>The referee taps Running late and a time. The coordinator acknowledges from the board, and the gap stays under Needs attention until it is covered.</p></div></div>
+    <div class="beat"><div class="tm">10:30</div><div><b>A coach watches and writes</b><p>The coach's phone shows every game at the venue. One note per referee, written in the moment, reviewed by the program before release.</p></div></div>
+    <div class="beat"><div class="tm">7:52&nbsp;pm</div><div><b>The note lands the same night</b><p>On the referee's phone, on their card, in their language. The program sees it was read. Next weekend's coach builds on it.</p></div></div>
   </div>
 </div></section>
 
-<section id="gameday"><div class="wrap">
-  <div class="intro"><h2>A game day, start to finish.</h2><p class="lead">Nothing here is a mock-up. This is the order things happen in Colorado on a Saturday, and who sees what.</p></div>
-  <div class="day">
-    <div class="tm">6:50</div><div class="ev"><b>The referee opens Your day</b><p>Games pulled from the assigning platform overnight. Kickoff countdown, field, teams, who else is on the crew, the rules for that league or tournament, and a map to the venue. In Spanish if that's what they chose.</p><div class="who">Referee</div></div>
-    <div class="tm">7:14</div><div class="ev"><b>One tap to check in</b><p>No QR codes, no table. The site coordinator sees the name turn green on the board. A referee who hasn't checked in turns gold 30 minutes before kickoff and red at 15.</p><div class="who">Referee, site coordinator</div></div>
-    <div class="tm">7:40</div><div class="ev"><b>Running late, with an answer</b><p>The referee taps Running late and a time. The coordinator acknowledges it from the board, the referee sees the acknowledgement, and the open slot is listed under Needs attention until someone covers it.</p><div class="who">Referee, site coordinator</div></div>
-    <div class="tm">10:30</div><div class="ev"><b>A coach watches and writes</b><p>The referee coach's phone shows every game at the venue and who's on it. One note per referee, written in the moment. The referee gets a heads-up that a coach is at their field.</p><div class="who">Referee coach</div></div>
-    <div class="tm">2:15</div><div class="ev"><b>The note is cleaned, then reviewed</b><p>Notes are tidied for tone and clarity by AI, then every one is read by the Director of Referee Development before release. Flagged notes can be rewritten; nothing goes out unreviewed.</p><div class="who">Director of Referee Development</div></div>
-    <div class="tm">7:52 pm</div><div class="ev"><b>The referee reads it the same day</b><p>The note lands on the referee's phone, on their card, in their language. The program sees that it was read. The next weekend the coach can see what the last coach wrote.</p><div class="who">Referee</div></div>
-    <div class="tm">End of day</div><div class="ev"><b>Hours and payroll, filed in a minute</b><p>Coordinators and coaches file their day from the phone. Payroll by venue, by date range or by person prints from one screen.</p><div class="who">Site coordinator, operations</div></div>
-  </div>
-</div></section>
-
-<section class="dark" id="board"><div class="wrap">
-  <div class="intro"><h2>The board says who needs attention.</h2><p class="lead">Venue staff don't scan a list of 60 games. The board does that, and shows the five things that need a person right now.</p></div>
-  <div class="board">
-    <div class="head"><b>Dick's Sporting Goods Park</b><span>42 games, 31 checked in, 10:12 am</span></div>
-    <div class="grid">
-      <div class="att red"><b>Field 3, 10:30</b><span>AR2 not checked in. J. Alvarez.</span><br><span class="why">15 minutes to kickoff. Text them.</span></div>
-      <div class="att"><b>Field 9, 10:45</b><span>Center not checked in. T. Okafor.</span><br><span class="why">Gold: 30 minutes. Watching.</span></div>
-      <div class="att"><b>Field 1, 10:30</b><span>Running late, 10 minutes. M. Chen.</span><br><span class="why">Acknowledged by S. Park, 10:04.</span></div>
-      <div class="att red"><b>Field 6, 11:00</b><span>Open slot: AR1.</span><br><span class="why">Nobody assigned. Pull from HQ.</span></div>
-      <div class="att"><b>Help call</b><span>Field 12. "Need a coordinator at the gate."</span><br><span class="why">2 minutes ago.</span></div>
-      <div class="att ok"><b>Everything else</b><span>37 games on time, crews complete.</span><br><span class="why">All clear.</span></div>
-    </div>
-  </div>
-  <p class="lead" style="margin-top:28px">Tap a name and you get their card: phone number, a Text button with the message already written, their games today, their coaching history. Minors show the guardian's contact instead. Nobody's location is tracked.</p>
-</div></section>
-
-<section id="inside"><div class="wrap">
-  <div class="intro"><h2>What's inside.</h2><p class="lead">One app, one sign-in with an emailed code, one database you own. Each person sees the screens their role unlocks.</p></div>
-  <div class="mods">
-    <div class="mod"><div class="for">Every referee</div><h3>Your day</h3><p>Games, countdown, check-in, running late, the rules for each competition, the crew, coaching notes, the fitness test sign-up and your season's numbers. Works on iOS and Android as a home-screen app, in English or Spanish, and is built to go easy on the battery for people who are outside all day.</p></div>
-    <div class="mod"><div class="for">Site coordinators, operations</div><h3>Command Center</h3><p>Every venue and every crew, live. Needs attention first, then the full board. Bulletins to referees. Help calls. Weather. Incident reports. Protection alerts for minors.</p></div>
-    <div class="mod"><div class="for">Referee coaches</div><h3>Coaching</h3><p>Who's at my venue, who hasn't had feedback this season, one note per referee written on the phone. Coaches see each other's released notes, so the fourth note builds on the third.</p></div>
-    <div class="mod"><div class="for">Director of Referee Development</div><h3>Review</h3><p>Every note cleaned by AI and read by a person before release. Flagged notes are rewritten or held. Coverage: who has worked, who has been seen, who has read their notes.</p></div>
-    <div class="mod"><div class="for">Referees and evaluators</div><h3>Evaluations</h3><p>A referee requests a formal evaluation from their game screen, for maintenance or an upgrade. The evaluator writes it in the same app; it counts toward the referee's record.</p></div>
-    <div class="mod"><div class="for">Head of refereeing</div><h3>State of the program</h3><p>Fifteen years of registration from the Learning Center exports: referees by year, first-year versus returning, who comes back after a break, retention, age, gender, experience, compliance, and where referees live on a map with the fields pinned. Season numbers update live.</p></div>
-    <div class="mod"><div class="for">Operations</div><h3>Setup</h3><p>Events, their venues, rules pages and alert emails. Fitness tests, classes and clinics with sign-up, capacity and a roster. A bulletin goes out the moment a session is created.</p></div>
-    <div class="mod"><div class="for">Instructors</div><h3>Fitness test</h3><p>The FIFA test on one sheet: six sprints, the interval run by run with the pacer playing from the instructor's phone, CODA for assistant referees. Pass only when every part passes. Print or save the PDF. The referee gets a badge.</p></div>
-    <div class="mod"><div class="for">Operations, payroll</div><h3>End of day</h3><p>Coordinators and coaches file hours from the phone. Payroll by venue, date range or person; edit a report after filing; print.</p></div>
-    <div class="mod"><div class="for">Everyone</div><h3>Reference Library</h3><p>Laws of the Game, signals, procedures, career paths, the fitness standards with audio, and each competition's rules on its own page. Offline once opened.</p></div>
-    <div class="mod"><div class="for">Operations</div><h3>People</h3><p>Every referee from the Learning Center, matched to the assigning platform's names. Titles and roles. The list of who hasn't registered for next year, with emails ready to copy and a CSV for the assignors.</p></div>
-    <div class="mod"><div class="for">The program</div><h3>Retention, measured</h3><p>Registration tracked week by week through the renewal season. The Hub asks each referee to renew from their own screen, and stops asking the day their new license shows up.</p></div>
-  </div>
-</div></section>
-
-<section id="numbers"><div class="wrap">
-  <div class="intro"><h2>The numbers a director never had.</h2><p class="lead">This is Colorado's real chart, from the State of the program screen. Every year's roster is made of three groups. The program holds at 2,900 only because 1,200 new referees arrive each year to replace the ones who leave.</p></div>
-  <div class="chart">
-    <svg viewBox="0 0 720 300" role="img" aria-label="Colorado referees by year, 2017 to 2026, split into continuing, back after a break and first-year">
-      <g font-family="Atkinson Hyperlegible, sans-serif" font-size="12" fill="#4A5060">
-        <text x="2" y="42">3,000</text><text x="2" y="152">1,500</text><text x="26" y="262">0</text>
-      </g>
-      <g stroke="#DDD8CC"><line x1="48" y1="38" x2="712" y2="38"/><line x1="48" y1="148" x2="712" y2="148"/><line x1="48" y1="258" x2="712" y2="258"/></g>
-      <!-- scale: 220px = 3,000 referees. bars drawn from the data: continuing, gap return, first-year -->
-      <g id="bars"></g>
-      <g font-family="Atkinson Hyperlegible, sans-serif" font-size="12" fill="#4A5060" text-anchor="middle" id="xl"></g>
-    </svg>
-    <div class="leg"><span><i style="background:#1E3A73"></i>Continuing from last year</span><span><i style="background:#F2B800"></i>Back after a break</span><span><i style="background:#C8102E"></i>First-year</span></div>
-  </div>
+<section class="nums" id="numbers"><div class="wrap">
+  <div class="intro"><h2>Youth soccer is growing. Referee rosters can too.</h2>
+  <p class="lead">Most programs lose a referee before anyone notices they were drifting. The whole platform is aimed at one moment: a first-year referee gets a thoughtful note from a coach in October, feels seen, and signs up again in March.</p></div>
   <div class="stats">
-    <div class="stat"><b>2,865</b><span>licensed referees in Colorado, 2026</span></div>
-    <div class="stat"><b>41%</b><span>in their first year of registration</span></div>
-    <div class="stat"><b>37%</b><span>of first-year referees come back the next year</span></div>
-    <div class="stat"><b>13%</b><span>of those who leave ever register again</span></div>
+    <div class="stat"><b>1 tap</b><span>from the parking lot to checked in, and a board that already knows</span></div>
+    <div class="stat"><b>Same night</b><span>from a coach's note at the field to the referee reading it at home</span></div>
+    <div class="stat"><b>15 seasons</b><span>of registration history on one screen: who is new, who returned, who you are about to lose</span></div>
   </div>
-  <p class="lead" style="margin-top:28px">That last number is why the Hub asks every referee to renew from their own phone, and why the coaching loop exists: a referee who got a note from a coach in October is one who feels like someone noticed.</p>
+  <p class="illus">Screens and figures on this page use sample data.</p>
 </div></section>
 
-<section class="dark" id="states"><div class="wrap">
-  <div class="intro"><h2>For your state. Or your tournament.</h2><p class="lead">The Hub runs on your data, in your name, with your badge in the corner. Colorado's is the first; the next one takes weeks, not a season.</p></div>
+<section><div class="wrap">
+  <div class="intro"><h2>Three weeks to your first live Saturday.</h2>
+  <p class="lead">Colorado was the first. The next state starts from everything it taught us.</p></div>
   <div class="steps">
-    <div class="step"><div class="wk">Week 1</div><h3>Your people</h3><p>Export your referees from the US Soccer Learning Center. Names, licenses, clearances and contact details load into your own database. Minors are handled under your protection rules from the first day.</p></div>
-    <div class="step"><div class="wk">Week 2</div><h3>Your games</h3><p>Connect your assigning platform. Games sync every two hours, every group, four weeks out. Referee names are matched to people once and remembered.</p></div>
-    <div class="step"><div class="wk">Week 3</div><h3>Your weekend</h3><p>Your coordinators, coaches and reviewers get their unlocks. Pick one venue for the first Saturday. The board is live, the notes flow, and by Sunday night you have your first coverage numbers.</p></div>
+    <div class="step"><div class="wk">Week 1</div><h3>Your people</h3><p>Export your referees from the US Soccer Learning Center. Names, licenses, clearances and contacts load into a database under your own account. Minors are handled under your protection rules from day one.</p></div>
+    <div class="step"><div class="wk">Week 2</div><h3>Your games</h3><p>Connect your assigning platform. Games sync automatically, every group, weeks ahead. Referee names are matched to people once and remembered.</p></div>
+    <div class="step"><div class="wk">Week 3</div><h3>Your weekend</h3><p>Coordinators, coaches and reviewers get their unlocks. Pick one venue for the first Saturday. By Sunday night you have your first coverage numbers.</p></div>
   </div>
-  <p class="lead" style="margin-top:36px"><a href="states.html" style="color:var(--gold)">The page for state directors</a> covers what you hand over, what each role gets, and the first season. What you keep: your data, in a database under your account. What you get: the app, the updates, and the person who built it on the phone. What it costs is a conversation, not a rate card: states pick the tools they want and pay per program or per person; tournaments pay by the event; referee coaches by the seat.</p>
 </div></section>
 
 <section id="demo"><div class="wrap who">
   <div>
     <h2>See it with your own games.</h2>
-    <p class="lead" style="margin-top:18px">Thirty minutes on a call. Bring a weekend's schedule and we'll show you what the board and the referee's phone would have looked like.</p>
+    <p class="lead" style="margin-top:18px">Thirty minutes on a call. Bring a weekend's schedule and we will show you what the board and the referee's phone would have looked like.</p>
     <ul>
-      <li><b>State programs</b><span>Statewide license. Every referee, every venue, the State of the program screen for your SRA.</span></li>
-      <li><b>Tournaments and leagues</b><span>A deployment for the event: check-in, the board, running late, rules on every referee's phone, payroll at the end.</span></li>
-      <li><b>Referee coaches</b><span>An individual seat: write notes, request reviews, build a record of who you've seen.</span></li>
+      <li><b>State programs</b><span>Statewide: every referee, every venue, the full State view for your SRA.</span></li>
+      <li><b>Tournaments and leagues</b><span>A deployment for the event: check-in, the board, rules on every referee's phone, payroll at the end.</span></li>
+      <li><b>Referee coaches</b><span>An individual seat: write notes, run formal evaluations, build a record of who you have seen.</span></li>
     </ul>
+    <p class="price">What it costs is a conversation, not a rate card. States pick the tools they want; tournaments pay by the event; coaches by the seat. Your data stays yours, in a database under your account.</p>
   </div>
   <form id="f" novalidate>
     <h3>Request a demo</h3>
@@ -324,32 +274,16 @@
 </div></section>
 
 <footer><div class="wrap">
-  <div class="brand" aria-label="JAReferee"><i></i></div>
+  <div class="brand" aria-label="JAReferee"></div>
   <span>Referees first.</span>
-  <span>© 2026 JAReferee LLC. All rights reserved.</span>
+  <span>&copy; 2026 JAReferee LLC. All rights reserved.</span>
   <a href="mailto:licensing@jareferee.com">licensing@jareferee.com</a>
-  <span style="margin-left:auto">v2026.10.14-b</span>
+  <span style="margin-left:auto">v2026.10.21-a</span>
 </div></footer>
 
 <script>
 (function () {
-  // One orchestrated moment: the phone walks through the day, then stops.
-  var ph = document.getElementById('phone'), at = 0, reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  ph.setAttribute('data-at', '0');
-  if (!reduce) { var tick = setInterval(function () { at++; ph.setAttribute('data-at', String(at)); if (at >= 3) clearInterval(tick); }, 2600); }
-  ph.addEventListener('click', function () { at = (at + 1) % 4; ph.setAttribute('data-at', String(at)); });
-
-  // The chart: Colorado's real numbers (continuing, back after a break, first-year), scale 3,000 = 220 px.
-  var data = [[2017, 1442, 151, 938], [2018, 1498, 170, 958], [2019, 1461, 141, 810], [2020, 1098, 86, 345], [2021, 1457, 193, 392], [2022, 870, 145, 1073], [2023, 1064, 148, 947], [2024, 1192, 205, 1296], [2025, 1466, 162, 1270], [2026, 1491, 197, 1177]];
-  var bars = document.getElementById('bars'), xl = document.getElementById('xl'), cols = ['#1E3A73', '#F2B800', '#C8102E'], w = 46, gap = (664 - w * data.length) / (data.length - 1);
-  data.forEach(function (d, i) {
-    var x = 48 + i * (w + gap), y = 258;
-    for (var k = 1; k <= 3; k++) { var h = d[k] / 3000 * 220; y -= h; var r = document.createElementNS('http://www.w3.org/2000/svg', 'rect'); r.setAttribute('x', x); r.setAttribute('y', y); r.setAttribute('width', w); r.setAttribute('height', h); r.setAttribute('fill', cols[k - 1]); r.setAttribute('rx', k === 3 ? 3 : 0); bars.appendChild(r); }
-    var t = document.createElementNS('http://www.w3.org/2000/svg', 'text'); t.setAttribute('x', x + w / 2); t.setAttribute('y', 278); t.textContent = d[0]; xl.appendChild(t);
-    var tot = document.createElementNS('http://www.w3.org/2000/svg', 'text'); tot.setAttribute('x', x + w / 2); tot.setAttribute('y', y - 6); tot.setAttribute('text-anchor', 'middle'); tot.setAttribute('font-size', '11'); tot.setAttribute('fill', '#1B1F2A'); tot.setAttribute('font-weight', '700'); tot.textContent = (d[1] + d[2] + d[3]).toLocaleString(); bars.appendChild(tot);
-  });
-
-  // The form. FORM_ENDPOINT is where requests go; with none set it opens an email to licensing@.
+  // The demo form. FORM_ENDPOINT is where requests go; with none set it opens an email to licensing@.
   var FORM_ENDPOINT = '';
   document.getElementById('f').addEventListener('submit', async function (e) {
     e.preventDefault();
